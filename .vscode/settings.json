@@ -1,4 +1,0 @@
-{
-    "python.pythonPath": "myvenv/bin/python",
-    "jupyter.jupyterLaunchTimeout": 240000
-}

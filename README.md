@@ -1,1 +1,0 @@
-# api-placar-beachtennis

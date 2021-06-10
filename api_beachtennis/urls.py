@@ -20,9 +20,10 @@ from django.conf import settings
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 
-from atletas.views import AtletasViewSet
-from torneios.views import TorneiosViewSet
-from cidades.views import PaisesViewSet, EstadosViewSet, CidadesViewSet
+# from atletas.views import AtletasViewSet
+# from torneios.views import TorneiosViewSet, NivelCategoriasViewSet, GeneroCategoriasViewSet
+from torneios.views import *
+from cidades.views import *
 
 # from paises.urls import paises_urls
 # from cidades.urls import cidades_urls
@@ -31,10 +32,14 @@ from cidades.views import PaisesViewSet, EstadosViewSet, CidadesViewSet
 
 route = routers.DefaultRouter()
 
-route.register(r'atletas', AtletasViewSet, basename='Atletas')
+# route.register(r'atletas', AtletasViewSet, basename='Atletas')
 route.register(r'torneios', TorneiosViewSet, basename='Torneios')
-route.register(r'paises', PaisesViewSet, basename='Paises')
-route.register(r'estados', EstadosViewSet, basename='Estados')
+route.register(r'nivelcategorias', NivelCategoriasViewSet, basename='NivelCategorias')
+route.register(r'generocategorias', GeneroCategoriasViewSet, basename='GeneroCategorias')
+route.register(r'tiposcategorias', TipoCategoriasViewSet, basename='TipoCategorias')
+route.register(r'torneiocategorias', TorneioCategoriasViewSet, basename='TorneioCategorias')
+# route.register(r'paises', PaisesViewSet, basename='Paises')
+# route.register(r'estados', EstadosViewSet, basename='Estados')
 route.register(r'cidades', CidadesViewSet, basename='Cidades')
 
 urlpatterns = [

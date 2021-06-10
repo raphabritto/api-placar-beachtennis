@@ -26,7 +26,7 @@ class Atletas(models.Model):
     foto = models.ImageField(upload_to=upload_foto_atleta, blank=True, null=True)
     ativo = models.BooleanField(default=False)
     data_inclusao = models.DateTimeField(auto_now_add=True)
-    data_ultima_modificacao = models.DateTimeField(auto_now_add=True)
+    data_atualizacao = models.DateTimeField(auto_now_add=True)
 
     # def __str__(self):
     #     return self.nome

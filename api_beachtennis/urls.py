@@ -38,8 +38,8 @@ route.register(r'nivelcategorias', NivelCategoriasViewSet, basename='NivelCatego
 route.register(r'generocategorias', GeneroCategoriasViewSet, basename='GeneroCategorias')
 route.register(r'tiposcategorias', TipoCategoriasViewSet, basename='TipoCategorias')
 route.register(r'torneiocategorias', TorneioCategoriasViewSet, basename='TorneioCategorias')
-# route.register(r'paises', PaisesViewSet, basename='Paises')
-# route.register(r'estados', EstadosViewSet, basename='Estados')
+route.register(r'paises', PaisesViewSet, basename='Paises')
+route.register(r'estados', EstadosViewSet, basename='Estados')
 route.register(r'cidades', CidadesViewSet, basename='Cidades')
 
 urlpatterns = [

@@ -41,10 +41,10 @@ class NivelCategoriasSerializer(serializers.ModelSerializer):
 
 
     def update(self, instance, validated_data):
-        instance.nomeNivel = validated_data['nomeNivel'].upper()
-        instance.idadeMinima = validated_data['idadeMinima']
-        instance.idadeMaxima = validated_data['idadeMaxima']
-        instance.ativo = validated_data['ativo']
+        instance.nomeNivel = validated_data.get('nomeNivel', instance.nomeNivel).upper()
+        instance.idadeMinima = validated_data.get('idadeMinima', instance.idadeMinima)
+        instance.idadeMaxima = validated_data.get('idadeMaxima', instance.idadeMaxima)
+        instance.ativo = validated_data.get('ativo', instance.ativo)
         instance.dataAtualizacao = datetime.now()
         instance.save()
 
@@ -69,8 +69,8 @@ class GeneroCategoriasSerializer(serializers.ModelSerializer):
 
 
     def update(self, instance, validated_data):
-        instance.nomeGenero = validated_data['nomeGenero'].upper()
-        instance.ativo = validated_data['ativo']
+        instance.nomeGenero = validated_data.get('nomeGenero', instance.nomeGenero).upper()
+        instance.ativo = validated_data.get('ativo', instance.atiivo)
         instance.dataAtualizacao = datetime.now()
         instance.save()
 
@@ -95,9 +95,9 @@ class TipoCategoriasSerializer(serializers.ModelSerializer):
         return tipoCategoria
 
     def update(self, instance, validated_data):
-        instance.nomeTipo = validated_data['nomeTipo'].upper()
-        instance.quantidadeAtletas = validated_data['quantidadeAtletas']
-        instance.ativo = validated_data['ativo']
+        instance.nomeTipo = validated_data.get('nomeTipo', instance.nomeTipo).upper()
+        instance.quantidadeAtletas = validated_data.get('quantidadeAtletas', instance.quantidadeAtletas)
+        instance.ativo = validated_data.get('ativo', instance.ativo)
         instance.dataAtualizacao = datetime.now()
         instance.save()
 
@@ -109,14 +109,14 @@ class TorneioCategoriasSerializer(serializers.ModelSerializer):
         model = TorneioCategorias
         fields = '__all__'
 
-    def create(self, validated_data):
+    def create(self, validate_data):
         torneioCategoria = TorneioCategorias.objects.create(
-            torneio = Torneios.objects.get(torneioId = validate_data['torneioId']),
-            tipoCategoria = TipoCategorias.objects.get(tipoId = validate_data['tipoId']),
-            # generoCategoria = models.ForeignKey(GeneroCategorias),
-            # nivelCategoria = models.ForeignKey(NivelCategorias),
+            torneio=validate_data.pop('torneio'),
+            tipoCategoria=validate_data.pop('tipoCategoria'),
+            generoCategoria = validate_data.pop('generoCategoria'),
+            nivelCategoria=validate_data.pop('nivelCategoria'),
             numeroMaximoParticipantes = validate_data['numeroMaximoParticipantes'],
-            ativo = validated_data['ativo'],
+            ativo=validate_data['ativo'],
             dataInclusao = datetime.now(),
             dataAtualizacao = datetime.now()
 

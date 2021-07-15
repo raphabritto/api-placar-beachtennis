@@ -111,12 +111,12 @@ class TorneioCategoriasSerializer(serializers.ModelSerializer):
 
     def create(self, validate_data):
         torneioCategoria = TorneioCategorias.objects.create(
-            torneio=validate_data.pop('torneio'),
-            tipoCategoria=validate_data.pop('tipoCategoria'),
+            torneio = validate_data.pop('torneio'),
+            tipoCategoria = validate_data.pop('tipoCategoria'),
             generoCategoria = validate_data.pop('generoCategoria'),
-            nivelCategoria=validate_data.pop('nivelCategoria'),
+            nivelCategoria = validate_data.pop('nivelCategoria'),
             numeroMaximoParticipantes = validate_data['numeroMaximoParticipantes'],
-            ativo=validate_data['ativo'],
+            ativo = validate_data['ativo'],
             dataInclusao = datetime.now(),
             dataAtualizacao = datetime.now()
 

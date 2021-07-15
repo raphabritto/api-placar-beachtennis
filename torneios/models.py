@@ -30,6 +30,10 @@ class Torneios(models.Model):
     dataInclusao = models.DateTimeField(auto_now_add=True)
     dataAtualizacao = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.nomeTorneio
+
+
 # sexo_dic = ({"id": 1, "value": "Feminino"}, 
 #             {"id": 2, "value": "Masculino"}, 
 #             {"id": 3, "value": "Mista"})
@@ -45,6 +49,9 @@ class GeneroCategorias(models.Model):
     dataInclusao = models.DateTimeField(auto_now_add=True)
     dataAtualizacao = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.nomeGenero
+
 
 class NivelCategorias(models.Model):
     # nivelId = models.SmallIntegerField(primary_key=True, editable=False)
@@ -56,6 +63,9 @@ class NivelCategorias(models.Model):
     dataInclusao = models.DateTimeField(auto_now_add=True)
     dataAtualizacao = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.nomeNivel
+
 
 class TipoCategorias(models.Model):
     tipoId = models.AutoField(primary_key=True)
@@ -64,6 +74,9 @@ class TipoCategorias(models.Model):
     ativo = models.BooleanField(default=True)
     dataInclusao = models.DateTimeField(auto_now_add=True)
     dataAtualizacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.nomeTipo
 
 
 # class Categorias(models.Model):
@@ -85,6 +98,12 @@ class TorneioCategorias(models.Model):
     ativo = models.BooleanField(default=True)
     dataInclusao = models.DateTimeField(auto_now_add=True)
     dataAtualizacao = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        # db_table = tor
+        constraints = [
+            models.UniqueConstraint(fields=['torneio', 'tipoCategoria', 'generoCategoria', 'nivelCategoria'], name='categoria_torneio_unica')
+        ]
 
 
 # class Equipes(models.Model):

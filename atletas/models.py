@@ -14,7 +14,7 @@ def upload_foto_atleta(instance, nome_arquivo):
 
 class Atletas(models.Model):
     # atleta_id = models.IntegerField(primary_key=True, editable=False)
-    atleta_id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    atletaId = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     cidade = models.ForeignKey(Cidades, on_delete=models.RESTRICT)
     nome = models.CharField(max_length=60)
     sobrenome = models.CharField(max_length=60)
@@ -22,11 +22,11 @@ class Atletas(models.Model):
     email = models.EmailField(max_length=200, unique=True)
     cpf = models.CharField(max_length=11, unique=True)
     # cpf = models.RegexField(regex=r'\d', max_length=11, unique=True)
-    data_nascimento = models.DateField()
+    dataNascimento = models.DateField()
     foto = models.ImageField(upload_to=upload_foto_atleta, blank=True, null=True)
     ativo = models.BooleanField(default=False)
-    data_inclusao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now_add=True)
+    dataInclusao = models.DateTimeField(auto_now_add=True)
+    dataAtualizacao = models.DateTimeField(auto_now_add=True)
 
     # def __str__(self):
     #     return self.nome

@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models.base import Model
 from django.db.models.fields import CharField, SmallIntegerField
 
-# from atletas.models import Atletas
+from atletas.models import Atletas
 from cidades.models import Cidades
 
 # Create your models here.
@@ -78,6 +78,10 @@ class TipoCategorias(models.Model):
     def __str__(self):
         return self.nomeTipo
 
+    # class Meta:
+    #     verbose_name = 'Tipo Categoria'
+    #     verbose_name_plural = 'Tipo Categorias'
+
 
 # class Categorias(models.Model):
 #     categoriaId = models.SmallIntegerField(primary_key=True, editable=False)
@@ -88,38 +92,72 @@ class TipoCategorias(models.Model):
 
 
 class TorneioCategorias(models.Model):
+    torneioCategoriaId = models.AutoField(primary_key=True)
     torneio = models.ForeignKey(Torneios, on_delete=models.RESTRICT)
-    tipoCategoria = models.ForeignKey(TipoCategorias, on_delete=models.RESTRICT)
-    generoCategoria = models.ForeignKey(GeneroCategorias, on_delete=models.RESTRICT)
-    nivelCategoria = models.ForeignKey(NivelCategorias, on_delete=models.RESTRICT)
+    tipoCategoria = models.ForeignKey(TipoCategorias, on_delete=models.RESTRICT, verbose_name='Tipo Categoria')
+    generoCategoria = models.ForeignKey(GeneroCategorias, on_delete=models.RESTRICT, verbose_name='Genero')
+    nivelCategoria = models.ForeignKey(NivelCategorias, on_delete=models.RESTRICT, verbose_name='Nivel')
     # idadeMinima = models.SmallIntegerField()
     # idadeMaxima = models.SmallIntegerField()
-    numeroMaximoParticipantes = models.SmallIntegerField()
+    numeroMaximoParticipantes = models.SmallIntegerField(verbose_name='Numero Maximo Participantes/Duplas')
     ativo = models.BooleanField(default=True)
     dataInclusao = models.DateTimeField(auto_now_add=True)
     dataAtualizacao = models.DateTimeField(auto_now_add=True)
 
+    # def validate_unique(self, exclude: None):
+    #     torneio = Torneios.objects.filter(torneioId = self.torneio.torneioId)
+    #     if self.pk is None:
+    #         if torneio.filter(item = self.item).exists():
+    #             raise ValidationError('item ja existe')
+
+    #     return super().validate_unique(exclude=exclude)
+
     class Meta:
+        unique_together = ('torneio', 'tipoCategoria', 'generoCategoria', 'nivelCategoria')
+        # managed = False
         # db_table = tor
-        constraints = [
-            models.UniqueConstraint(fields=['torneio', 'tipoCategoria', 'generoCategoria', 'nivelCategoria'], name='categoria_torneio_unica')
-        ]
+        # verbose_name = 'Categoria'
+        # verbose_name_plural = 'Categorias'
+
+        # constraints = [
+        #     models.UniqueConstraint(fields=['torneio', 'tipoCategoria', 'generoCategoria', 'nivelCategoria'], name='categoria_torneio_unica')
+        # ]
 
 
-# class Equipes(models.Model):
-#     equipe_id = models.IntegerField()
-#     torneio = models.ForeignKey(Torneios, on_delete=models.RESTRICT)
-#     # categoria = models.ForeignKey(Categorias, on_delete=models.RESTRICT)
-#     atleta = models.ForeignKey(Atletas, on_delete=models.RESTRICT)
+class Equipes(models.Model):
+    equipeId = models.AutoField(primary_key=True)
+    torneioCategoria = models.ForeignKey(TorneioCategorias, on_delete=models.RESTRICT)
+    atleta = models.ManyToManyField(Atletas, related_name='atletas', verbose_name='Atleta(s)')
+    dataInclusao = models.DateTimeField(auto_now_add=True)
+    dataAtualizacao = models.DateTimeField(auto_now_add=True)
 
 
-# class Jogos(models.Model):
-#     jogo_id = models.UUIDField(primary_key=True, default=uuid4)
-#     torneio = models.ForeignKey(Torneios, on_delete=models.RESTRICT)
-#     data_jogo = models.DateField()
-#     hora_jogo = models.TimeField()
-#     # quadra
+# class Grupos(models.Model):
+#     grupoId = models.AutoField(primary_key=True)
+#     equipes = models.ManyToManyField
+#     dataInclusao = models.DateTimeField(auto_now_add=True)
+#     dataAtualizacao = models.DateTimeField(auto_now_add=True)
 
+
+class Jogos(models.Model):
+    # jogoId = models.UUIDField(primary_key=True, default=uuid4)
+    jogoId = models.AutoField(primary_key=True)
+    equipeA = models.ForeignKey(Equipes, on_delete=models.RESTRICT, related_name='equipeA')
+    equipeB = models.ForeignKey(Equipes, on_delete=models.RESTRICT, related_name='equipeB')
+    dataJogo = models.DateField()
+    horaJogo = models.TimeField()
+    dataInclusao = models.DateTimeField(auto_now_add=True)
+    dataAtualizacao = models.DateTimeField(auto_now_add=True)
+
+
+class Placar(models.Model):
+    placarId = models.AutoField(primary_key=True)
+    jogo = models.ForeignKey(Jogos, on_delete=models.RESTRICT)
+    equipe = models.ForeignKey(Equipes, on_delete=models.RESTRICT)
+    numeroSet = models.IntegerField()
+    numeroGame = models.IntegerField()
+    dataInclusao = models.DateTimeField(auto_now_add=True)
+    dataAtualizacao = models.DateTimeField(auto_now_add=True)
 
 # class jogoEquipes(models.Model):
 #     jogo = models.ForeignKey(Jogos, on_delete=models.RESTRICT)

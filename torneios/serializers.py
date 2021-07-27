@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 # from .models import Torneios, NivelCategorias, GeneroCategorias
 from .models import *
+from atletas.serializers import *
 
 from datetime import datetime
 
@@ -139,3 +140,62 @@ class TorneioCategoriasSerializer(serializers.ModelSerializer):
     #     instance.save()
 
     #     return instance
+
+
+class EquipesSerializer(serializers.ModelSerializer):
+    # atleta = AtletasSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Equipes
+        fields = '__all__'
+
+    def create(self, validate_data):
+        equipe = Equipes.objects.create(
+            torneioCategoria=validate_data.pop('torneioCategoria'),
+            dataInclusao=datetime.now(),
+            dataAtualizacao=datetime.now()
+        )
+        equipe.save()
+
+        for i in validate_data.pop('atleta'):
+            equipe.atleta.add(i)
+
+        return equipe
+
+
+class JogosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Jogos
+        fields = '__all__'
+
+    def create(self, validate_data):
+        jogo = Jogos.objects.create(
+            equipeA = validate_data.pop('equipeA'),
+            equipeB = validate_data.pop('equipeB'),
+            dataJogo = validate_data['dataJogo'],
+            horaJogo = validate_data['horaJogo'],
+            dataInclusao = datetime.now(),
+            dataAtualizacao = datetime.now()
+        )
+        jogo.save()
+
+        return jogo
+
+
+class PlacarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Placar
+        fields = '__all__'
+
+    def create(self, validate_data):
+        placar = Placar.objects.create(
+            jogo = validate_data.pop('jogo'),
+            equipe = validate_data.pop('equipe'),
+            numeroSet = validate_data['numeroSet'],
+            numeroGame = validate_data['numeroGame'],
+            dataInclusao = datetime.now(),
+            dataAtualizacao = datetime.now()
+        )
+        placar.save()
+
+        return placar

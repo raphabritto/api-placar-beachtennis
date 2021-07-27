@@ -1,3 +1,4 @@
+from django.db.models import query
 from rest_framework import viewsets
 
 # from .serializers import TorneiosSerializer, NivelCategoriasSerializer, GeneroCategoriasSerializer
@@ -30,3 +31,17 @@ class TorneioCategoriasViewSet(viewsets.ModelViewSet):
     serializer_class = TorneioCategoriasSerializer
     queryset = TorneioCategorias.objects.all()
         
+
+class EquipesViewSet(viewsets.ModelViewSet):
+    serializer_class = EquipesSerializer
+    queryset = Equipes.objects.all()
+
+
+class JogosViewSet(viewsets.ModelViewSet):
+    serializer_class = JogosSerializer
+    queryset = Jogos.objects.all()
+
+
+class PlacarViewSet(viewsets.ModelViewSet):
+    serializer_class = PlacarSerializer
+    queryset = Placar.objects.all()

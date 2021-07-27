@@ -2,7 +2,7 @@ from rest_framework import serializers
 from datetime import date
 
 
-from atletas.models import Atletas
+from atletas.models import *
 
 
 class AtletasSerializer(serializers.ModelSerializer):
